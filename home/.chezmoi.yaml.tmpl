@@ -1,0 +1,10 @@
+{{- $name := promptString "❔ What is your full name" "Carl Brown" -}}
+{{- $email := promptString "❔ What is your email" "cbrwflo@users.noreply.github.com" -}}
+{{- $is_codespace := env "CODESPACES" | not | not -}}
+
+data:
+  name: {{ $name | quote }}
+  email: {{ $email | quote }}
+
+  flags:
+    is_codespace: {{ $is_codespace }}

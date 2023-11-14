@@ -1,0 +1,14 @@
+README.MD
+
+{{ if eq .chezmoi.os "darwin" }}
+.oh-my-zsh/cache/**
+.bashrc
+{{ end }}
+
+{{ if eq .chezmoi.os "linux" }}
+.hushlogin
+{{ end }}
+
+{{ if eq .chezmoi.os "windows" }}
+.bashrc
+{{ end }}
