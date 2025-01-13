@@ -2,7 +2,7 @@
 {{ if and (eq .chezmoi.os "linux") (or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "pop")) -}}
 
 sudo apt-get update
-sudo apt install apt-transport-https bash bash-completion wget curl git git-lfs tree jq unzip fzf skopeo notepadqq --yes
+sudo apt install apt-transport-https bash bash-completion wget curl git git-lfs tree jq unzip fzf skopeo notepadqq ripgrep --yes
 
 # Are we using Snapcraft?
 if [ -S /run/snapd.socket ]; then
