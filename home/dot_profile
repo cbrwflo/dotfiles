@@ -25,3 +25,20 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+
+# Idempotently set SSH_AGENT variables, if the process is running
+# courtesy: https://rabexc.org/posts/pitfalls-of-ssh-agents
+ssh-add -L &>/dev/null
+if [ "$?" == 2 ]; then
+  test -r ~/.ssh/ssh-agent.conf && \
+    eval "$(<~/.ssh/ssh-agent.conf)" >/dev/null
+
+  # test again by attempting to list public keys from an already-running SSH-agent
+  ssh-add -L &>/dev/null
+  if [ "$?" == 0 ]; then
+    echo "Found ssh-agent PID=$SSH_AGENT_PID (~/.ssh/ssh-agent.conf)"
+  elif [ "$?" == 2 ]; then
+    echo "no ssh-agent running -- see alias 'start_ssh_agent'"
+    # rm ~/.ssh/ssh-agent.conf
+  fi
+fi
