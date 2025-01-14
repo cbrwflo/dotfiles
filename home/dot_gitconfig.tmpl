@@ -6,3 +6,11 @@
   default = current
 [init]
   defaultBranch = main
+[alias]
+	fbv = !git fetch && git branch -vv
+  # if an upstream isn't set on current branch, attempt to set it to a branch on origin of same name
+  sup = !"git rev-parse --symbolic-full-name @{upstream} || $(git branch --list --remotes | grep $(git branch --show-current) && git branch --set-upstream-to=origin/$(git branch --show-current) $(git branch --show-current)) || echo no upstream exists - exiting!"
+	undo = reset --soft HEAD^
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	ld = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
+	ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
