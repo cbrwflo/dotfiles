@@ -1,0 +1,25 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+
+# show full path in Finder
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+
+# show hidden files (also, command + shift + . in Finder)
+defaults write com.apple.Finder AppleShowAllFiles -bool true
+
+# Show extensions
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Sort folders first
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+
+# Always use list view
+defaults write com.apple.Finder FXPreferredViewStyle Nlsv
+
+# reload settings
+killall Finder
+
+# reduce animation delay when switching spaces
+defaults write com.apple.Accessibility ReduceMotionEnabled -integer 1
+
+{{ end -}}

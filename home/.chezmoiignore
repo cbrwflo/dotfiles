@@ -1,14 +1,17 @@
 README.MD
 
 {{ if eq .chezmoi.os "darwin" }}
-.oh-my-zsh/cache/**
 .bashrc
+.profile
 {{ end }}
 
 {{ if eq .chezmoi.os "linux" }}
-.hushlogin
+.zshrc
+.zprofile
 {{ end }}
 
 {{ if eq .chezmoi.os "windows" }}
 .bashrc
+.zshrc
+.zprofile
 {{ end }}

@@ -1,0 +1,27 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+
+brew install watch wget curl tree jq yq kubectl helm kubectx fzf chezmoi skopeo ripgrep argocd entr
+
+# tilt is slow to re-install
+if [ ! command -v tilt >/dev/null 2>&1 ]; then
+  curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
+fi
+
+# https://krew.sigs.k8s.io/docs/user-guide/setup/install/
+(
+  set -x; cd "$(mktemp -d)" &&
+  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+  KREW="krew-${OS}_${ARCH}" &&
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+  tar zxvf "${KREW}.tar.gz" &&
+  ./"${KREW}" install krew
+)
+
+# nodeJS
+# LATEST_NVM_VERSION=$(curl -sI https://github.com/nvm-sh/nvm/releases/latest | awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}')
+# CURRENT_NVM_VERSION=$(nvm --version)
+NVM_VERSION=v0.39.5
+curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
+{{ end -}}
