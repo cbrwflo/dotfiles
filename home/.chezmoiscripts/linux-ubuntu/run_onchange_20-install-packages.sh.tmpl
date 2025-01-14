@@ -51,10 +51,16 @@ else
   sudo apt-get install helm kubectl --yes
 fi
 
-  # utilities
-  if [ ! command -v yq >/dev/null 2>&1 ]; then
+if ! command -v kubectx >/dev/null 2>&1; then
+  echo "installing kubectx"
+  sudo git clone https://github.com/ahmetb/kubectx /usr/local/kubectx
+  sudo ln -s /usr/local/kubectx/kubectx /usr/local/bin/kubectx
+  sudo ln -s /usr/local/kubectx/kubens /usr/local/bin/kubens
+fi
+
+# utilities
+if [ ! command -v yq >/dev/null 2>&1 ]; then
   wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
-  fi
 fi
 
 # joplin
