@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 {{ if and (eq .chezmoi.os "linux") (or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "pop")) -}}
 
 sudo apt-get update
@@ -33,7 +33,7 @@ else
     echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://download.vscodium.com/debs vscodium main' \
     | sudo tee /etc/apt/sources.list.d/vscodium.list \
     && \
-    apt install -y codium
+    sudo apt install -y codium
 
   # helm: https://helm.sh/docs/intro/install/#from-apt-debianubuntu
   curl -fsSL https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
@@ -74,10 +74,15 @@ if ! command -v tilt >/dev/null 2>&1; then
 fi
 
 # nodeJS
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+# LATEST_NVM_VERSION=$(curl -sI https://github.com/nvm-sh/nvm/releases/latest | awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}')
+# CURRENT_NVM_VERSION=$(nvm --version)
+NVM_VERSION=v0.39.5
+curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
 
 # golang
-GO_VERSION=$(curl -fsSL 'https://go.dev/VERSION?m=text' | head -n 1)
+# LATEST_GO_VERSION=$(curl -fsSL 'https://go.dev/VERSION?m=text' | head -n 1)
+# CURRENT_GO_VERSION=$(go version 2>/dev/null | awk '{print $3}')
+GO_VERSION='go1.23.4'
 wget "https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz" \
   && sudo rm -rf /usr/local/go \
   && sudo tar -C /usr/local -xzf go*.linux-amd64.tar.gz \
