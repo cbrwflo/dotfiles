@@ -10,7 +10,7 @@ if [ -S /run/snapd.socket ]; then
 
   # kubernetes & cloud-native utilities
   sudo snap install chezmoi --classic
-  sudo snap install kubectl --classic
+  sudo snap install kubectl --classic --channel=1.31/stable
   sudo snap install helm --classic
   sudo snap install kubectx --classic
 
@@ -35,8 +35,11 @@ else
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list > /dev/null
 
   # kubectl: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-using-native-package-management
-  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --dearmor | sudo tee /usr/share/keyrings/kubernetes-apt-keyring.gpg > /dev/null
-  echo 'deb [signed-by=/usr/share/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
+  KUBECTL_VERSION=v1.31
+  curl -fsSL https://pkgs.k8s.io/core:/stable:/$KUBECTL_VERSION/deb/Release.key | gpg --dearmor | sudo tee /usr/share/keyrings/kubernetes-apt-keyring.gpg > /dev/null
+  echo "deb [signed-by=/usr/share/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/$KUBECTL_VERSION/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+  sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg # allow unprivileged APT programs to read this keyring
+  sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list   # helps tools such as command-not-found to work correctly
 
   # kubernetes & cloud-native utilities
   sudo apt-get update
