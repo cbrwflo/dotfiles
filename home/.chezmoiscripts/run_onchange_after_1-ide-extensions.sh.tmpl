@@ -1,0 +1,33 @@
+{{ if (eq .chezmoi.os "darwin" "linux") -}}
+
+#!/bin/bash
+
+codium --list-extensions --show-versions
+
+{{ $extensions := list
+     "eamodio.gitlens"
+     "EditorConfig.EditorConfig"
+     "golang.go"
+     "jinliming2.vscode-go-template"
+     "github.vscode-github-actions"
+     "GitHub.vscode-pull-request-github"
+     "ms-python.python"
+     "dbaeumer.vscode-eslint"
+     "esbenp.prettier-vscode"
+     "ms-azuretools.vscode-docker"
+     "exiasr.hadolint"
+     "ms-kubernetes-tools.vscode-kubernetes-tools"
+     "ipedrazas.kubernetes-snippets"
+     "Tchoupinax.tilt"
+     "redhat.vscode-yaml"
+     "streetsidesoftware.code-spell-checker"
+     "Tyriar.sort-lines"
+     "yzhang.markdown-all-in-one" -}}
+
+set -eufo pipefail
+
+{{ range $extensions -}}
+codium --install-extension {{ . }}
+{{ end -}}
+
+{{ end -}}
