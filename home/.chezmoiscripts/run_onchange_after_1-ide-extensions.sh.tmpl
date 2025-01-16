@@ -16,7 +16,6 @@ IDE_BIN=codium
      "eamodio.gitlens"
      "EditorConfig.EditorConfig"
      "golang.go"
-     "jinliming2.vscode-go-template"
      "github.vscode-github-actions"
      "GitHub.vscode-pull-request-github"
      "ms-python.python"
@@ -42,6 +41,7 @@ set -eufo pipefail
 # VSCodium is the open source version of VSCode -- not all extensions will be available
 # Refer: https://github.com/VSCodium/vscodium/blob/master/docs/index.md#extensions-marketplace
 # Marketplace at: https://open-vsx.org/
+code --install-extension jinliming2.vscode-go-template
 code --install-extension ms-vsliveshare.vsliveshare
 code --install-extension ms-vsliveshare.vsliveshare-pack
 {{ end -}}
