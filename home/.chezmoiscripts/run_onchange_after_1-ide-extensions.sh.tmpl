@@ -2,7 +2,15 @@
 
 #!/bin/bash
 
-codium --list-extensions --show-versions
+{{ if eq .ide "vscode" -}}
+IDE_BIN=code
+{{ end -}}
+
+{{ if eq .ide "codium" -}}
+IDE_BIN=codium
+{{ end -}}
+
+"$IDE_BIN" --list-extensions --show-versions
 
 {{ $extensions := list
      "eamodio.gitlens"
@@ -27,7 +35,15 @@ codium --list-extensions --show-versions
 set -eufo pipefail
 
 {{ range $extensions -}}
-codium --install-extension {{ . }}
+"$IDE_BIN" --install-extension {{ . }}
+{{ end -}}
+
+{{ if eq .ide "vscode" -}}
+# VSCodium is the open source version of VSCode -- not all extensions will be available
+# Refer: https://github.com/VSCodium/vscodium/blob/master/docs/index.md#extensions-marketplace
+# Marketplace at: https://open-vsx.org/
+code --install-extension ms-vsliveshare.vsliveshare
+code --install-extension ms-vsliveshare.vsliveshare-pack
 {{ end -}}
 
 {{ end -}}

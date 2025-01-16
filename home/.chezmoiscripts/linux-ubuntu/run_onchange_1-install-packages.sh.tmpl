@@ -8,8 +8,15 @@ sudo apt install apt-transport-https bash bash-completion wget curl git git-lfs 
 if [ -S /run/snapd.socket ]; then
   echo "installing using snapcraft"
 
-  # https://vscodium.com/
+  {{ if eq .ide "vscode" -}}
+  # https://code.visualstudio.com/docs/setup/linux#_snap
+  sudo snap install --classic code
+  {{ end -}}
+
+  {{ if eq .ide "codium" -}}
+  # https://vscodium.com/#install-with-snap-linux
   snap install codium --classic
+  {{ end -}}
 
   # kubernetes & cloud-native utilities
   sudo snap install chezmoi --classic
@@ -25,7 +32,18 @@ else
   # chezmoi
   sh -c "$(curl -fsLS get.chezmoi.io)"
 
-  # codium - https://vscodium.com/
+  {{ if eq .ide "vscode" -}}
+  # https://code.visualstudio.com/docs/setup/linux#_debian-and-ubuntu-based-distributions
+  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+  sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+  echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+  rm -f packages.microsoft.gpg
+  sudo apt update
+  sudo apt install code
+  {{ end -}}
+
+  {{ if eq .ide "codium" -}}
+  # https://vscodium.com/#install-with-snap-linux
   wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
     | gpg --dearmor \
     | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg \
@@ -34,6 +52,7 @@ else
     | sudo tee /etc/apt/sources.list.d/vscodium.list \
     && \
     sudo apt install -y codium
+  {{ end -}}
 
   # helm: https://helm.sh/docs/intro/install/#from-apt-debianubuntu
   curl -fsSL https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null

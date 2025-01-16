@@ -24,4 +24,15 @@ fi
 # CURRENT_NVM_VERSION=$(nvm --version)
 NVM_VERSION=v0.39.5
 curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
+
+{{ if eq .ide "vscode" -}}
+# https://formulae.brew.sh/cask/visual-studio-code#default
+brew install --cask visual-studio-code
+{{ end -}}
+
+{{ if eq .ide "codium" -}}
+# https://vscodium.com/#install-with-brew-mac
+brew install --cask vscodium
+{{ end -}}
+
 {{ end -}}
