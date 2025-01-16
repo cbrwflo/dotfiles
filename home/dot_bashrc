@@ -116,12 +116,13 @@ if ! shopt -oq posix; then
   fi
 fi
 
+alias clip='xclip -selection clipboard'
 alias code=codium
 
 # Docker
 alias dc=docker-compose
 
-# Kubernetes 
+# Kubernetes
 source <(kubectl completion bash)
 alias k=kubectl
 complete -o default -F __start_kubectl k
