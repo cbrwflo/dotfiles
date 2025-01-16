@@ -106,4 +106,15 @@ wget "https://go.dev/dl/${GO_VERSION}.linux-amd64.tar.gz" \
   && sudo rm -rf /usr/local/go \
   && sudo tar -C /usr/local -xzf go*.linux-amd64.tar.gz \
   && rm "${GO_VERSION}.linux-amd64.tar.gz"
+
+# Hashicorp / Terraform
+wget -qO - https://apt.releases.hashicorp.com/gpg \
+  | gpg --dearmor \
+  | sudo dd of=/usr/share/keyrings/hashicorp-archive-keyring.gpg \
+  && \
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+  | sudo tee /etc/apt/sources.list.d/hashicorp.list \
+  && \
+  sudo apt update && sudo apt install -y terraform
+
 {{ end -}}

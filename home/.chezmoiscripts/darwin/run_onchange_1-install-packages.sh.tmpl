@@ -3,6 +3,9 @@
 
 brew install watch wget curl tree jq yq kubectl helm kubectx fzf chezmoi skopeo ripgrep argocd entr
 
+brew tap hashicorp/tap
+brew install hashicorp/tap/terraform
+
 # tilt is slow to re-install
 if [ ! command -v tilt >/dev/null 2>&1 ]; then
   curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
